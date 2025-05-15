@@ -1,4 +1,4 @@
-package repository;
+package vendingmachine;
 
 /*
    음료 객체를 다루는 클래스 Beverage

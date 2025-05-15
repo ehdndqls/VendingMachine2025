@@ -1,5 +1,7 @@
-package vendingmechine;
-import repository.Beverage;
+package vendingmachine.gui;
+
+import vendingmachine.Beverage;
+import vendingmachine.VendingMachine;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -107,6 +109,7 @@ public class VendingMachineGUI extends JFrame {
                 beverageButtons[i].setEnabled(false);
             } else if (!beverages.get(i).checkEnoughMoney(price)) {  // 여기 수정
                 beverageButtons[i].setText("");
+                beverageButtons[i].setEnabled(false);
             } else {
                 beverageButtons[i].setText("구매");
                 beverageButtons[i].setEnabled(true);
@@ -114,9 +117,8 @@ public class VendingMachineGUI extends JFrame {
         }
     }
 
-    private class BeverageButtonListener implements ActionListener {
-        private int index;
-
+    private static class BeverageButtonListener implements ActionListener {
+        private final int index;
         // 생성자: 정수 매개변수를 받아서 beverageNum에 저장합니다.
         public BeverageButtonListener(int beverageNum) {
             this.index = beverageNum;
@@ -127,25 +129,21 @@ public class VendingMachineGUI extends JFrame {
         }
     }
 
-    private class DepositListener implements ActionListener {
+    private static class DepositListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 돈 삽입 버튼이 클릭되었을 때의 동작
-            //depositGUI depositGUIframe = new depositGUI(vendingMachine);
+            VendingMachine.insertCoin();
         }
     }
 
-    private class ReturnChangeListener implements ActionListener {
+    private static class ReturnChangeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-           /* // 돈 반환 버튼이 클릭되었을 때의 동작
-            int change = vendingMachine.ReturnMoney();
-            if (change == -1);
-                // 처리 없음 (자판기 미사용)
-            else
-                JOptionPane.showMessageDialog(VendingMachineGUI.this, "잔돈 " + change + "원을 반환합니다");*/
+            // 돈 반환 버튼이 클릭되었을 때의 동작
+            VendingMachine.returnMoney();
         }
     }
 
-    private class AdminModeButtonListener implements ActionListener {
+    private static class AdminModeButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 관리자 모드 버튼이 클릭되었을 때의 동작
             /*if (vendingMachine.CurrentMoney != null) {
