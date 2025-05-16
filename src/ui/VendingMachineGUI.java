@@ -1,7 +1,7 @@
-package vendingmachine.gui;
+package ui;
 
-import vendingmachine.Beverage;
-import vendingmachine.VendingMachine;
+import model.Beverage;
+import serivce.VendingMachineService;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -16,8 +16,12 @@ public class VendingMachineGUI extends JFrame {
     private JLabel[] nameLabels;
     private JLabel[] priceLabels;
     private JLabel totalAmountLabel;
+    private final VendingMachineService vendingMachineService;
 
     public VendingMachineGUI(ArrayList<Beverage> beverages) {
+
+        vendingMachineService = new VendingMachineService();
+
         setTitle("자판기");
         setSize(400, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,7 +121,7 @@ public class VendingMachineGUI extends JFrame {
         }
     }
 
-    private static class BeverageButtonListener implements ActionListener {
+    private class BeverageButtonListener implements ActionListener {
         private final int index;
         // 생성자: 정수 매개변수를 받아서 beverageNum에 저장합니다.
         public BeverageButtonListener(int beverageNum) {
@@ -125,25 +129,25 @@ public class VendingMachineGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-            VendingMachine.purchase(index); // 구매
+            vendingMachineService.purchase(index); // 구매
         }
     }
 
-    private static class DepositListener implements ActionListener {
+    private class DepositListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 돈 삽입 버튼이 클릭되었을 때의 동작
-            VendingMachine.insertCoin();
+            vendingMachineService.insertCoin();
         }
     }
 
-    private static class ReturnChangeListener implements ActionListener {
+    private class ReturnChangeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 돈 반환 버튼이 클릭되었을 때의 동작
-            VendingMachine.returnMoney();
+            vendingMachineService.returnMoney();
         }
     }
 
-    private static class AdminModeButtonListener implements ActionListener {
+    private class AdminModeButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 관리자 모드 버튼이 클릭되었을 때의 동작
             /*if (vendingMachine.CurrentMoney != null) {

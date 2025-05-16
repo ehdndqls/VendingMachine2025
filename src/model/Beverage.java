@@ -1,4 +1,4 @@
-package vendingmachine;
+package model;
 
 /*
    음료 객체를 다루는 클래스 Beverage
@@ -16,7 +16,7 @@ public class Beverage {
     }
 
     // 생성자
-    public Beverage(String name, Integer price, int stockCount, Boolean isSoldout) {
+    public Beverage(String name, Integer price, int stockCount) {
         this.name = name;
         this.price = price;
         this.stock = null;

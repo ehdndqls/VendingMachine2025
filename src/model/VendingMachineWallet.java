@@ -1,7 +1,7 @@
-package vendingmachine;
+package model;
 
-import datastrcture.BinarySearchTree;
-import error.NotEnoughChangeException;
+import util.datastrcture.BinarySearchTree;
+import util.error.NotEnoughChangeException;
 
 import java.util.Stack;
 
@@ -16,6 +16,7 @@ public class VendingMachineWallet extends BinarySearchTree{
 
     // 생성자
     public VendingMachineWallet(){
+        change = new Stack<>();
     }
 
     public VendingMachineWallet(int count) {

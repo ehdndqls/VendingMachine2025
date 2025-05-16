@@ -1,4 +1,4 @@
-package datastrcture;
+package util.datastrcture;
 
 // 트리 - 사용 : 돈관리
 

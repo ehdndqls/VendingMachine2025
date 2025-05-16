@@ -1,7 +1,7 @@
-package vendingmachine;
+package model;
 
-import datastrcture.Queue;
-import error.MoneyExceededException;
+import util.datastrcture.Queue;
+import util.error.MoneyExceededException;
 
 public class UserWallet {
     int totalAmount;    // 입력받은 화폐의 총량

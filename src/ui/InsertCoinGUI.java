@@ -1,6 +1,6 @@
-package vendingmachine.gui;
+package ui;
 
-import vendingmachine.VendingMachine;
+import serivce.VendingMachineService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,12 @@ import java.awt.event.*;
 
 public class InsertCoinGUI extends JFrame {
 
+    private final VendingMachineService vendingMachineService;
+
     public InsertCoinGUI() {
+
+        vendingMachineService = new VendingMachineService();
+
         setTitle("Insert Money");
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +40,7 @@ public class InsertCoinGUI extends JFrame {
     }
 
     // 돈 버튼 액션 리스너
-    private static class MoneyButtonListener implements ActionListener {
+    private class MoneyButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 돈 삽입
 
@@ -44,7 +49,7 @@ public class InsertCoinGUI extends JFrame {
             String buttonText = button.getText();
             int moneyAmount = Integer.parseInt(buttonText.substring(0, buttonText.length() - 1));
             // 전송
-            VendingMachine.insertCoin(moneyAmount);
+            vendingMachineService.insertCoin(moneyAmount);
         }
     }
 
