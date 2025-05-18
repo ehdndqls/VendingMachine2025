@@ -151,6 +151,7 @@ public class AdminSystemGUI extends JFrame {
     private class beverageManagementListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 음료 관리 로직
+
         }
     }
 
