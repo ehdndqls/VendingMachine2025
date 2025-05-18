@@ -33,9 +33,9 @@ public class VendingMachineWallet extends BinarySearchTree{
         this.change.clear();    // 거스름돈 초기화
         this.remaining = price;     // 반환해야할 금액
         if(price == 0) return null;
-        System.out.println("함수실행 전 "+remaining);
+
         returnChange(getRoot());    // root노드 호출
-        System.out.println("함수실행 후 "+remaining);
+
         if (remaining > 0) {             // 거스름돈이 부족한 경우
             for(int coin : change){     // 뺀 만큼의 돈을 다시 삽입
                 insertNode(coin, 1);

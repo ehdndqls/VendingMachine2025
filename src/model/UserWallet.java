@@ -16,10 +16,12 @@ public class UserWallet {
 
     // 화폐를 받아 queue에 입력 >> 변수가 할당이 안되어있으면 변수 할당
     public void insertCoin(int coin){
-        if(money.isEmpty())
+        if(money == null) {
             money = new Queue();
+        }
 
         money.enqueue(coin);
+        totalAmount += coin;
     }
 
     public int dequeueCoin(){

@@ -9,7 +9,11 @@ public class FileManager {
 
     // 데이터 저장 함수
     public static void saveToFile(String filePath, List<String> dataList) {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath))) {
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                Paths.get(filePath),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.APPEND)) {
+
             // 빈 줄로 구분
             writer.newLine();
 
@@ -25,6 +29,22 @@ public class FileManager {
             System.out.println("[파일 저장 성공] " + filePath);
         } catch (IOException e) {
             System.err.println("[파일 저장 실패] " + e.getMessage());
+        }
+    }
+
+    // 매출 기록 함수
+    public static void recordSale(String filePath, String beverageName, Integer price){
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                Paths.get(filePath),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.APPEND)) {
+            // 현재 시간 기록
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+            writer.write(currentTime + " " + beverageName + " " + price);
+            writer.newLine();
+            System.out.println("[매출 기록 성공] " + filePath);
+        } catch (IOException e) {
+            System.err.println("[매출 기록 실패] " + e.getMessage());
         }
     }
 
@@ -71,4 +91,7 @@ public class FileManager {
                 .skip(1)
                 .toArray(String[]::new);
     }
+
+
+
 }

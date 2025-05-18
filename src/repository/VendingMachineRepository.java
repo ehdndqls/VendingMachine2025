@@ -9,14 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VendingMachineRepository {
-    VendingMachineWallet vendingMachineWallet;   // 자판기 보유 금액
-    UserWallet userWallet; // 사용자 입력금액
-    ArrayList<Beverage> beverages;   // 음료 데이터
+    private VendingMachineWallet vendingMachineWallet;   // 자판기 보유 금액
+    private UserWallet userWallet; // 사용자 입력금액
+    private ArrayList<Beverage> beverages;   // 음료 데이터
 
     public VendingMachineRepository() {
         // 돈통
         vendingMachineWallet = new VendingMachineWallet();
         userWallet = new UserWallet();
+        beverages = new ArrayList<>();
 
         // 파일에서 데이터 불러와서 저장
         loadVendingMachine(beverages, vendingMachineWallet);

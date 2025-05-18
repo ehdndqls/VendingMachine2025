@@ -1,5 +1,6 @@
 package ui;
 
+import main.VendingMachine;
 import serivce.VendingMachineService;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class InsertCoinGUI extends JFrame {
 
     public InsertCoinGUI() {
 
-        vendingMachineService = new VendingMachineService();
+        vendingMachineService = VendingMachine.vendingMachineService;
 
         setTitle("Insert Money");
         setSize(300, 200);

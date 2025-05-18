@@ -1,5 +1,6 @@
 package ui;
 
+import main.VendingMachine;
 import model.Beverage;
 import serivce.VendingMachineService;
 
@@ -20,7 +21,7 @@ public class VendingMachineGUI extends JFrame {
 
     public VendingMachineGUI(ArrayList<Beverage> beverages) {
 
-        vendingMachineService = new VendingMachineService();
+        vendingMachineService = VendingMachine.vendingMachineService;
 
         setTitle("자판기");
         setSize(400, 600);

@@ -1,6 +1,9 @@
 package serivce;
 
 import main.VendingMachine;
+import ui.LoginGUI;
+import util.FileManager;
+import util.error.LoginFailedException;
 import util.error.MoneyExceededException;
 import util.error.NotEnoughChangeException;
 import ui.InsertCoinGUI;
@@ -11,22 +14,29 @@ import java.util.Stack;
 
 public class VendingMachineService {
 
-    private static VendingMachineRepository vendingMachineRepository;
+    private VendingMachineRepository vendingMachineRepository;
 
+    public VendingMachineService() {
+        this.vendingMachineRepository = VendingMachine.vendingMachineRepository;
+    }
 
     // 화폐 삽입
     public void insertCoin(){
+        // 화폐를 입력받을 수 있는 GUI 생성
         VendingMachine.insertCoinGUI = new InsertCoinGUI();
     }
 
     public void insertCoin(int coin) {
         // 금액 초과 확인
         try {
-            vendingMachineRepository.getUserWallet().checkExceedMoney(coin);
+            if(vendingMachineRepository.getUserWallet() != null) {
+                vendingMachineRepository.getUserWallet().checkExceedMoney(coin);
+            }
         } catch (MoneyExceededException e){
             // 초과된 경우
             JOptionPane.showMessageDialog(VendingMachine.insertCoinGUI, e.getMessage());
             return;
+
         }
 
         // 금액 삽입
@@ -58,16 +68,20 @@ public class VendingMachineService {
     public void purchase(int index){
         int price = vendingMachineRepository.getBeverages().get(index).getPrice();        // 가격
         int payment = vendingMachineRepository.getUserWallet().getTotalAmount();          // 입력된 금액
-        Stack<Integer> change = null;                       // 거스름 돈이 저장될 변수
+        Stack<Integer> change = null;                                                     // 거스름 돈이 저장될 변수
 
 
         // 1. 입력된 금액 >> 자판기 돈통
-        while(vendingMachineRepository.getUserWallet().getTotalAmount() > 0){
-            vendingMachineRepository.getVendingMachineWallet().insertNode(vendingMachineRepository.getUserWallet().dequeueCoin(), 1);
+        while(vendingMachineRepository.getUserWallet().getTotalAmount() > 0){   // 입력된 금액이 0보다 크면
+            vendingMachineRepository.getVendingMachineWallet().insertNode(vendingMachineRepository.getUserWallet().dequeueCoin(), 1);   // 하나씩 빼서 자판기로 이동
+           // System.out.println(vendingMachineRepository.getUserWallet().getTotalAmount());
         }
+        System.out.println(vendingMachineRepository.getUserWallet().getTotalAmount());
+        vendingMachineRepository.getVendingMachineWallet().printInOrder();
         try {
             // 2. 자판기 돈통 -> 거스름돈
             change = vendingMachineRepository.getVendingMachineWallet().returnChange(payment - price);
+            System.out.println("잔돈: "+change);
 
         } catch (NotEnoughChangeException e) {
             // 실패: 거스름돈 부족
@@ -83,8 +97,12 @@ public class VendingMachineService {
             JOptionPane.showMessageDialog(VendingMachine.vendingMachineGUI, "에러: " + e.getMessage());
         }
 
+        // 사용자에게 거스름돈주고
+        // 재고까고
+
         // 구매 성공
         JOptionPane.showMessageDialog(VendingMachine.vendingMachineGUI, "주문완료: " + vendingMachineRepository.getBeverages().get(index).getName() + "(" + price + "원)");
+        FileManager.recordSale("src/resources/sales.txt",vendingMachineRepository.getBeverages().get(index).getName(), price);
         vendingMachineRepository.getBeverages().get(index).removeOneStock();  // 재고 하나 차감
 
         // 거스름 돈 체크 후 사용자 돈통에 삽입
@@ -97,12 +115,30 @@ public class VendingMachineService {
         returnMoney();
     }
 
-    // 관리자 모드 진입
-    public void SwitchAdminMode(){
-        /*
-        1. 로그인 요청
-        2. 암호 확인
-        3. 호출
-         */
+    // 자판기 종료 함수
+    public void exitVendingMachine(){
+        vendingMachineRepository.saveVendingMachine();  // 현재 데이터들을 저장하고
+        VendingMachine.vendingMachineGUI.dispose();     // 종료
     }
+
+    // 관리자 모드 진입
+    public void SwitchAdminMode() {
+        // 비밀번호를 입력받을 수 있는 GUI 생성
+        new LoginGUI();
+    }
+
+    // 로그인 함수 자판기 비밀번호와 사용자가 입력한 비밀번호가 같으면 성공 다르면 실패
+    public void Login(String password){
+        if(VendingMachine.password.equals(password))
+            System.out.println("성공ㅎㅎ");
+        else{
+            throw new LoginFailedException("로그인 실패");
+        }
+    }
+
+    public void setAdminMode(){
+        exitVendingMachine();
+        //new AdminSystem();
+    }
+
 }
