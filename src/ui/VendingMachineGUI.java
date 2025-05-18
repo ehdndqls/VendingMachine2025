@@ -25,7 +25,7 @@ public class VendingMachineGUI extends JFrame {
 
         setTitle("자판기");
         setSize(400, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null);
 
         // 현재 입력된 금액의 총량을 나타내는 라벨 생성
@@ -46,7 +46,7 @@ public class VendingMachineGUI extends JFrame {
         // 음료 라벨 생성
         beverageLabels = new JLabel[6];
         for (int i = 0; i < beverageLabels.length; i++) {
-            ImageIcon icon = new ImageIcon(beverages.get(i).getName() + ".png");
+            ImageIcon icon = new ImageIcon("src/img/"+beverages.get(i).getName() + ".png");
             beverageLabels[i] = new JLabel(icon);
             beverageLabels[i].setBounds(40 + i % 3 * 120, 50 + i / 3 * 150, 60, 60);
             add(beverageLabels[i]);
@@ -89,6 +89,17 @@ public class VendingMachineGUI extends JFrame {
         add(adminModeButton);
 
         updateBeverageButtons(beverages, 0);
+
+
+        // 창 종료 시 자동으로 저장
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                vendingMachineService.exitVendingMachine(); // 자판기 종료 및 저장
+                System.exit(0); // 창 닫기
+            }
+        });
+
         setVisible(true);
     }
 
@@ -151,21 +162,7 @@ public class VendingMachineGUI extends JFrame {
     private class AdminModeButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 관리자 모드 버튼이 클릭되었을 때의 동작
-            /*if (vendingMachine.CurrentMoney != null) {
-                JOptionPane.showMessageDialog(VendingMachineGUI.this, "잔돈이 반환되지 않았습니다.");
-            } else {
-                Login = new LoginSystem();
-                Login.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        if (Login.isAuthenticated()) {
-                            // 인증에 성공하면 AdminSystem을 호출합니다.
-                            dispose();
-                            AdminSystem adminSystem = new AdminSystem(vendingMachine);
-                        }
-                    }
-                });
-            }*/
+            vendingMachineService.SwitchAdminMode();
         }
     }
 }

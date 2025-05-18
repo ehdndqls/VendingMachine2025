@@ -2,6 +2,7 @@ package main;
 
 import repository.VendingMachineRepository;
 import serivce.VendingMachineService;
+import ui.AdminSystemGUI;
 import ui.InsertCoinGUI;
 import ui.VendingMachineGUI;
 
@@ -12,7 +13,6 @@ public class VendingMachine {
     public static VendingMachineGUI vendingMachineGUI;
     public static VendingMachineService vendingMachineService;
     public static VendingMachineRepository vendingMachineRepository;
-    public static String password = "sch20204054!!";
 
     public static void main(String[] args) {
         // 1. 리포지토리 생성
@@ -23,8 +23,5 @@ public class VendingMachine {
 
         // 3. GUI 생성
         vendingMachineGUI = new VendingMachineGUI(vendingMachineRepository.getBeverages());
-
-        // 필요 시 저장
-        vendingMachineRepository.saveVendingMachine();
     }
 }

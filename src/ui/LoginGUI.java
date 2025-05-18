@@ -1,6 +1,9 @@
 package ui;
 
+import main.AdminSystem;
 import main.VendingMachine;
+import serivce.AdminSystemService;
+import serivce.LoginService;
 import serivce.VendingMachineService;
 import util.error.LoginFailedException;
 
@@ -13,10 +16,12 @@ public class LoginGUI extends JFrame {
     private static String initialPassword = "sch20204054!"; // 초기 비밀번호
     private boolean authenticated; // 로그인 성공 여부를 나타내는 변수
     private final VendingMachineService vendingMachineService;
+    private final AdminSystemService adminSystemService;
 
-    public LoginGUI() {
+    public LoginGUI(String purpose) {
 
         vendingMachineService = VendingMachine.vendingMachineService;
+        adminSystemService = AdminSystem.adminSystemService;
 
         setTitle("AdminSystem Login");
         setSize(360, 80);
@@ -33,22 +38,36 @@ public class LoginGUI extends JFrame {
         add(passwordLabel); // 비밀번호 라벨 추가
         add(passwordField); // 비밀번호 입력 필드 추가
         add(new JLabel()); // 빈 라벨 추가 (레이아웃 맞추기용)
+        loginButton.addActionListener(new LoginButtonListener(purpose));
         add(loginButton); // 로그인 버튼 추가
-
         setVisible(true); // 프레임 표시
     }
 
-    // 돈 버튼 액션 리스너
+    // 로그인 버튼 액션 리스너
     private class LoginButtonListener implements ActionListener {
+        String purpose;
+        LoginButtonListener(String purpose) {
+            this.purpose = purpose;
+        }
         public void actionPerformed(ActionEvent e) {
             char[] passwordChars = passwordField.getPassword();
             String password = new String(passwordChars);
             try{
-                vendingMachineService.Login(password);
+                LoginService.Login(password);
             } catch (LoginFailedException ex) {
                 JOptionPane.showMessageDialog(LoginGUI.this, "에러: " + ex.getMessage());
+                return;
             }
-            vendingMachineService.setAdminMode();
+
+            if(purpose.equals("ChangePassword")) {
+               // adminSystemService.ChangePassword();
+                System.out.println(purpose);
+            }
+            if(purpose.equals("Login")) {
+                vendingMachineService.loadAdminMode();
+                System.out.println(purpose);
+            }
+            dispose();
         }
     }
 }

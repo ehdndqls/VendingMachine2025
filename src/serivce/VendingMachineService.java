@@ -1,5 +1,6 @@
 package serivce;
 
+import main.AdminSystem;
 import main.VendingMachine;
 import ui.LoginGUI;
 import util.FileManager;
@@ -124,21 +125,12 @@ public class VendingMachineService {
     // 관리자 모드 진입
     public void SwitchAdminMode() {
         // 비밀번호를 입력받을 수 있는 GUI 생성
-        new LoginGUI();
+        new LoginGUI("Login");
     }
 
-    // 로그인 함수 자판기 비밀번호와 사용자가 입력한 비밀번호가 같으면 성공 다르면 실패
-    public void Login(String password){
-        if(VendingMachine.password.equals(password))
-            System.out.println("성공ㅎㅎ");
-        else{
-            throw new LoginFailedException("로그인 실패");
-        }
-    }
-
-    public void setAdminMode(){
+    public void loadAdminMode(){
         exitVendingMachine();
-        //new AdminSystem();
+        new AdminSystem();
     }
 
 }
